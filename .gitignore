@@ -1,0 +1,25 @@
+# Build artifacts
+feature_extractor
+*.o
+*.so
+build/
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+Ensembleenv/
+venv/
+.venv/
+
+# Pipeline outputs
+saved_models/
+blastOutput/
+PIPELINE_RESULTS_HPC.csv
+blast_performance_metrics.csv
+
+# Extracted data (from committed .7z archives)
+rawFastas/
+sampleFastas/
+fullPaperFastas/

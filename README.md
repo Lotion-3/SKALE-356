@@ -1,5 +1,31 @@
 # K-BLEND
 
+K-BLEND is a hybrid genomic classification framework that pairs a fast, alignment-free k-mer neural ensemble with BLAST as a benchmark for classifying SARS-CoV-2 genomes by strain. A dependency-free C++ feature extractor computes bit-wise 3/5/6-mer frequency features directly from FASTA sequences, which feed a diversified ensemble of 25 neural network classifiers trained in parallel and combined via majority vote. The pipeline was evaluated against traditional BLAST alignment on 11,000 genomes spanning 11 SARS-CoV-2 strains (Alpha, Beta, Delta, Epsilon, Eta, Gamma, Iota, Lambda, Mu, Omicron, Zeta), sourced from [NGDC](https://ngdc.cncb.ac.cn/).
+
+![K-BLEND pipeline architecture: k-mer feature extraction, adaptive ensemble configuration, parallel diversified training, and majority-vote classification](fullPaperTables/Fig1.png)
+
+This repo contains the full training/evaluation pipeline ([ensemble.sh](ensemble.sh)), the BLAST benchmark harness ([blastTesting.py](blastTesting.py)), and the dataset splits and results tables used in the paper.
+
+## Publication
+Published in the proceedings of the 2025 IEEE MIT Undergraduate Research Technology Conference (URTC):
+[https://doi.org/10.1109/URTC68753.2025.11533085](https://doi.org/10.1109/URTC68753.2025.11533085)
+
+### Citation
+L. Agarwal, J. Koothur and J. Wang, "The K-BLEND Framework: A Hybrid Genomic Workflow Integrating Blast with a Kmer-Based Neural Ensemble," 2025 IEEE MIT Undergraduate Research Technology Conference (URTC), Cambridge, MA, USA, 2025, pp. 1-5, doi: 10.1109/URTC68753.2025.11533085.
+
+```bibtex
+@INPROCEEDINGS{11533085,
+  author={Agarwal, Laksh and Koothur, Juan and Wang, Juexin},
+  booktitle={2025 IEEE MIT Undergraduate Research Technology Conference (URTC)},
+  title={The K-BLEND Framework: A Hybrid Genomic Workflow Integrating Blast with a Kmer-Based Neural Ensemble},
+  year={2025},
+  volume={},
+  number={},
+  pages={1-5},
+  keywords={Modeling;Engines;Genomics;Printing;Tools;Surveillance;Timing;Sequences;Sequential analysis;Machine learning;Hybrid Genomic System;Machine Learning;BLAST;Alignment-Free;K-mer;SARS-CoV-2;Bioinformatics;Diagnostic Workflow;Computational Genomics},
+  doi={10.1109/URTC68753.2025.11533085}}
+```
+
 ## Setup
 
 Use requires linux terminal or ubuntu WSL.
@@ -66,7 +92,7 @@ The complete tables used in the paper are available in fullPaperTables along wit
 Pre usage setup  
 1. Bash Permissions  
 ```bash
-chmod +x Ensemble.sh
+chmod +x ensemble.sh
 ```
 2. C++ Setup
 ```bash
@@ -93,10 +119,10 @@ sudo chown $USER:$USER /mnt/ramdisk
 ```bash
 echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 ```
-Run the Ensemble.sh file, this automated script trains 25 ensemble models and provides evaluation data.  
+Run the ensemble.sh file, this automated script trains 25 ensemble models and provides evaluation data.  
 Execution arguments:  
 ```bash
-./Ensemble.sh inputDirectory #cpuCores
+./ensemble.sh inputDirectory #cpuCores
 ```
 The input directory expects two subdirectories, trainingFastas and testingFastas    
 The script recognizes 2 naming systems for train test pairs  
@@ -113,7 +139,7 @@ Default is half of system cores. Recommended maximum is the number of system cor
 
 Usage with sampleFastas:  
 ```bash
-./Ensemble.sh sampleFastas 2
+./ensemble.sh sampleFastas 2
 ```
 Evaluation information is saved in the PIPELINE_RESULTS_HPC.csv file.  
 Models are saved in saved_models/ directory.  
@@ -151,5 +177,6 @@ python3 blastTesting.py sampleFastas
 Evaluation information is saved in blast_performance_metrics.csv  
 Raw results in blastOutput folder  
 
-
+## License
+This project is licensed under the [MIT License](LICENSE).
 
